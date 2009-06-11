@@ -2,7 +2,7 @@ NAME
     Data::LUID - Generate guaranteed unique local identifiers
 
 VERSION
-    Version 0.011
+    Version 0.012
 
 SYNOPSIS
         use Data::LUID::Table

@@ -35,16 +35,22 @@ sub _initialize_generator {
     croak "What are you doing?!";
 }
 
+sub luid_key ($) {
+    return join '', 'luid:', shift;
+}
+
 sub take {
     my $self = shift;
     my $key = shift;
-    $self->store( $key );
+    croak "No key given to take" unless defined $key;
+    $self->store( luid_key $key );
 }
 
 sub taken {
     my $self = shift;
     my $key = shift;
-    return $self->exists( $key );
+    croak "No key given to check if taken" unless defined $key;
+    return $self->exists( luid_key $key )
 }
 
 sub make {
@@ -53,8 +59,9 @@ sub make {
     $self->bdb_manager->txn_do( sub {
         while( 1 ) {
             my $key = $self->generator->next;
-            next if $self->taken( $key );
-            $self->store( $key );
+            my $luid_key = luid_key $key;
+            next if $self->taken( $luid_key );
+            $self->store( $luid_key );
             return $key;
         }
     } );

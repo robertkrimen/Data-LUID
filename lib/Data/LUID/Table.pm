@@ -25,6 +25,46 @@ sub bdb_table {
     return $self->bdb_manager->open_db( 'table', class => 'BerkeleyDB::Hash' );
 }
 
+has generator => qw/is ro lazy_build 1/; # initializer _initialize_generator/;
+sub _build_generator {
+    require Data::LUID::Generator::TUID;
+    return Data::LUID::Generator::TUID->new;
+}
+sub _initialize_generator {
+    my ( $self, $value, $set );
+    croak "What are you doing?!";
+}
+
+sub take {
+    my $self = shift;
+    my $key = shift;
+    $self->store( $key );
+}
+
+sub taken {
+    my $self = shift;
+    my $key = shift;
+    return $self->exists( $key );
+}
+
+sub make {
+    my $self = shift;
+    # TODO Add throttle
+    $self->bdb_manager->txn_do( sub {
+        while( 1 ) {
+            my $key = $self->generator->next;
+            next if $self->taken( $key );
+            $self->store( $key );
+            return $key;
+        }
+    } );
+}
+
+sub next {
+    my $self = shift;
+    return $self->make;
+}
+
 sub store {
     my $self = shift;
     my $key = shift;

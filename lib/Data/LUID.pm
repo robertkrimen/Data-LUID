@@ -9,14 +9,60 @@ Data::LUID - Generate guaranteed unique local identifiers
 
 =head1 VERSION
 
-Version 0.01
+Version 0.010
 
 =cut
 
-our $VERSION = '0.01';
-
+our $VERSION = '0.010';
 
 =head1 SYNOPSIS
+
+    use Data::LUID::Table
+
+    my $table = Data::LUID::Table->new( path => 'luid' )
+
+    $luid = $table->make
+
+A sample run:
+
+    8bqwv1
+    kb3c6e
+    9tah65
+    5fd7rd
+    tss74z
+    7rxk5s
+    3mv3qb
+    2ad9qj
+
+=head1 DESCRIPTION
+
+On each call to C<< ->make >>, Data::LUID::Table will generate a guaranteed unique local identifier. Guaranteed because once each
+identifier is generated, it will be stored in a table for future lookup (collision avoidance).
+
+The current backend is L<BerkeleyDB> (let me know if you have a better suggestion)
+
+=head1 USAGE
+
+=head2 $table = Data::LUID::Table->new( path => <path> )
+
+The <path> argument (default: C<./luid> ) is the location of the table on disk. It should be a non-existent path (no file or directory)
+
+Create a new Data::LUID::Table, saving the table to disk at the given <path>
+
+You should not assume <path> be either a directory or file. The backend will use it appropiately (currently, it'll
+be a directory, since that's what BerkeleyDB uses)
+
+=head2 $luid = $table->make
+
+=head2 $luid = $table->next
+
+Generate the next luid in the sequence
+
+The current generator is using L<Data::TUID>, so there is no real "sequence" per se
+
+=head1 SEE ALSO
+
+L<Data::TUID>
 
 =head1 AUTHOR
 

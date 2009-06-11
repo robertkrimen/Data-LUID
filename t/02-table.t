@@ -29,4 +29,14 @@ $table->delete( 'apple' );
 ok( ! $table->exists( 'apple' ) );
 ok( $table->exists( 'banana' ) );
 
+my @luid;
+push @luid, $table->make for 0 ... 7;
+for ( @luid ) {
+    ok( $_, "$_" );
+    ok( 6 == length, " ...length is 6" );
+    ok( $table->taken( $_ ), " ...is taken" );
+}
+
+#warn $table->make, "\n" for 0 ... 7;
+
 1;

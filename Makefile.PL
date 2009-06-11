@@ -27,10 +27,11 @@ Directory::Scratch
 _END_
 
     map { my ($pk, $vr) = split m/\s/; requires $pk => $vr || 0 } grep { ! /^\s*#/ } split m/\n/, <<_END_;
+BerkeleyDB
 Carp::Clan::Share
 Data::TUID
 Moose
-BerkeleyDB
+Path::Class
 _END_
 }
 

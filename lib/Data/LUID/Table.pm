@@ -59,6 +59,7 @@ sub make {
     $self->bdb_manager->txn_do( sub {
         while( 1 ) {
             my $key = $self->generator->next;
+            croak "Got undefined value from luid generator ", $self->generator unless defined $key;
             next if $self->taken( $key );
             $self->take( $key );
             return $key;

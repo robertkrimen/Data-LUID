@@ -25,7 +25,7 @@ sub bdb_table {
     return $self->bdb_manager->open_db( 'table', class => 'BerkeleyDB::Hash' );
 }
 
-has generator => qw/is ro lazy_build 1/; # initializer _initialize_generator/;
+has generator => qw/is rw lazy_build 1/; # initializer _initialize_generator/;
 sub _build_generator {
     require Data::LUID::Generator::TUID;
     return Data::LUID::Generator::TUID->new;
@@ -59,9 +59,8 @@ sub make {
     $self->bdb_manager->txn_do( sub {
         while( 1 ) {
             my $key = $self->generator->next;
-            my $luid_key = luid_key $key;
-            next if $self->taken( $luid_key );
-            $self->store( $luid_key );
+            next if $self->taken( $key );
+            $self->take( $key );
             return $key;
         }
     } );

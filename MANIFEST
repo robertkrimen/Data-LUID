@@ -16,6 +16,7 @@ inc/Module/Install/WriteAll.pm
 lib/Data/LUID.pm
 lib/Data/LUID/Carp.pm
 lib/Data/LUID/Generator/TUID.pm
+lib/Data/LUID/Generator/Code.pm
 lib/Data/LUID/Table.pm
 META.yml
 t/00-load.t

@@ -2,7 +2,7 @@ NAME
     Data::LUID - Generate guaranteed unique local identifiers
 
 VERSION
-    Version 0.010
+    Version 0.011
 
 SYNOPSIS
         use Data::LUID::Table
@@ -26,22 +26,17 @@ DESCRIPTION
     On each call to "->make", Data::LUID::Table will generate a guaranteed
     unique local identifier. Guaranteed because once each identifier is
     generated, it will be stored in a table for future lookup (collision
-    avoidance).
+    avoidance)
 
-    The current backend is BerkeleyDB (let me know if you have a better
-    suggestion)
+    The current backend is BerkeleyDB
 
 USAGE
   $table = Data::LUID::Table->new( path => <path> )
-    The <path> argument (default: "./luid" ) is the location of the table on
-    disk. It should be a non-existent path (no file or directory)
-
     Create a new Data::LUID::Table, saving the table to disk at the given
     <path>
 
-    You should not assume <path> be either a directory or file. The backend
-    will use it appropiately (currently, it'll be a directory, since that's
-    what BerkeleyDB uses)
+    The <path> argument (default: "./luid") is the location of the table on
+    disk
 
   $luid = $table->make
   $luid = $table->next
